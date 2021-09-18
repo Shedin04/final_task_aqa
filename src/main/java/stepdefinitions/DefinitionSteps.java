@@ -7,7 +7,9 @@ import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.BasePage;
+import pages.GenderCategoriesPage;
 import pages.HomePage;
+import pages.ProductCategoryPage;
 
 import java.util.List;
 
@@ -19,8 +21,10 @@ public class DefinitionSteps {
 
     private static final long WAIT_FOR = 60;
     WebDriver driver;
-    HomePage homePage;
     PageFactoryManager pageFactoryManager;
+    HomePage homePage;
+    GenderCategoriesPage genderCategoriesPage;
+    ProductCategoryPage productCategoryPage;
 
     @Before
     public void testsSetUp() {
@@ -62,9 +66,11 @@ public class DefinitionSteps {
         assertTrue(homePage.checkCentralButtons());
     }
 
-    @And("User clicks home page {string} button")
-    public void clickHomePageCentralButtons(String button) {
+    @And("User clicks type of shop {string} button")
+    public void clickTypeOfShopCentralButtons(String button) {
         homePage.clickCentralShopButton(button);
+        genderCategoriesPage = pageFactoryManager.getGenderCategoriesPage();
+        genderCategoriesPage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks image on homepage")
@@ -75,6 +81,43 @@ public class DefinitionSteps {
     @And("Page with title {string} is displayed")
     public void pageWithTitleIsDisplayed(String pageTitle) {
         assertEquals(List.of(homePage.getTitle().split("'| ")).get(0),pageTitle);
+    }
+
+    @And("User checks goods features page")
+    public void checkGoodsFeaturesPage() {
+        assertTrue(genderCategoriesPage.checkGoodsFeatures());
+    }
+
+    @And("User clicks feature {string} button")
+    public void clickFeatureButton(String feature) {
+        genderCategoriesPage.clickProductFeature(feature);
+        productCategoryPage = pageFactoryManager.getProductCategoryPage();
+        productCategoryPage.waitForAjaxToComplete(WAIT_FOR);
+    }
+
+//    @And("User checks filters")
+//    public void checkFilters() {
+//        assertTrue(productCategoryPage.checkFilters());
+//    }
+//
+//    @And("User click {string} filter")
+//    public void clickFilter(String filter) {
+//        productCategoryPage.clickFilter(filter.substring(0,4));
+//    }
+
+    @And("count of styles is {string}")
+    public void checkCountOfStyles(String countOfStyles) {
+        assertEquals(productCategoryPage.getCountOfStyles().substring(0,2),countOfStyles.substring(0,2));
+    }
+
+    @And("User hover mouse over {string} category")
+    public void hoverMouseOverCategory(String category) {
+        BasePage.selectShopMainCategory(category);
+    }
+
+    @And("User clicks element {string} in header")
+    public void clickElementInHeader(String element) {
+        BasePage.clickHeaderElement(element);
     }
 
     @After

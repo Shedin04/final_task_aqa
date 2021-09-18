@@ -9,4 +9,8 @@ public class PageFactoryManager {
     public PageFactoryManager(WebDriver driver){this.driver = driver;}
 
     public HomePage getHomePage(){return new HomePage(driver);}
+
+    public GenderCategoriesPage getGenderCategoriesPage(){return new GenderCategoriesPage(driver);}
+
+    public ProductCategoryPage getProductCategoryPage() {return new ProductCategoryPage(driver);}
 }

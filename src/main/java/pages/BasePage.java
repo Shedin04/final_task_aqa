@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,13 +14,21 @@ import java.util.List;
 public class BasePage {
     protected final static int ELEMENT_TIMEOUT = 10;
     protected final static int WAIT_ELEMENTS = 15;
-    protected WebDriver driver;
+    protected static WebDriver driver;
+    protected static Actions actions;
 
     @FindBy(xpath = "//div[contains(@class,'headroom headroom')]//div[@data-testid='header']//a[contains(text(),'') and not(ancestor::div[@id='myaccount-dropdown'])]")
     protected static List<WebElement> headerButtonsWithoutProfile;
 
+    @FindBy(xpath = "//nav[contains(@aria-label,'products') and not (contains(@aria-hidden,'true'))]//button[contains(text,'')]")
+    protected static List<WebElement> headerShopMainCategories;
+
+    @FindBy(xpath = "//button[@aria-expanded='true']//following-sibling::div[1]//a")
+    protected static List<WebElement> elementsInHeader;
+
     public BasePage(WebDriver driver) {
         this.driver = driver;
+        actions = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -48,6 +57,15 @@ public class BasePage {
         }).findFirst().get().click();
     }
 
+    public static void selectShopMainCategory(String category){
+        actions.moveToElement(headerShopMainCategories.stream().filter(categ -> categ.getText().equals(category)).findFirst().get()).perform();
+    }
+
+    public static void clickHeaderElement(String element){
+        waitForElements(elementsInHeader,ELEMENT_TIMEOUT);
+        elementsInHeader.stream().filter(el -> el.getText().equals(element)).findFirst().get().click();
+    }
+
     public void waitForPageLoadComplete(long timeToWait) {
         new WebDriverWait(driver, timeToWait).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
@@ -67,7 +85,7 @@ public class BasePage {
         return true;
     }
 
-    public boolean waitForElements(List<WebElement> elements, long timeToWait) {
+    public static boolean waitForElements(List<WebElement> elements, long timeToWait) {
         try{
             new WebDriverWait(driver, timeToWait).until(ExpectedConditions.visibilityOfAllElements(elements));
         } catch (Exception e){
