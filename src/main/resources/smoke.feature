@@ -18,8 +18,8 @@ Feature: Smoke
       | homePage              | button     | title | feature                  | featureTitle | countOfStyles |
       | https://www.asos.com/ | SHOP MEN   | Men   | SMARTY PANTS             | Men          | 2,045         |
       | https://www.asos.com/ | SHOP WOMEN | Women | TEAM TOPSHOP             | Topshop      | 3,430         |
-      | https://www.asos.com/ | SHOP MEN   | Men   | ASOS X POLO RALPH LAUREN | Ralph        | 626           |
-      | https://www.asos.com/ | SHOP WOMEN | Women | THE NORTH FACE           | The          | 654           |
+      | https://www.asos.com/ | SHOP MEN   | Men   | ASOS X POLO RALPH LAUREN | Ralph        | 610           |
+      | https://www.asos.com/ | SHOP WOMEN | Women | THE NORTH FACE           | The          | 648           |
 
   Scenario Outline: User can find and open required pages in the header, filter goods presented there
     Given User opens '<homePage>' page
@@ -32,8 +32,13 @@ Feature: Smoke
     And User hover mouse over '<mainCategory>' category
     And User clicks element '<element>' in header
     And User checks '<pageName>' name of page
+    And User checks filters
+    When User click '<filter>' filter
+    And User checks filter sections
+    And User selects filter section '<section>'
+    Then User checks that name of products contains '<productName>'
 
     Examples:
-      | homePage              | button  | title | mainCategory | element          | pageName                    |
-      | https://www.asos.com/ | MEN     | Men   | Sale         | SALE Tracksuits  | Sale: Tracksuits & Joggers  |
-      | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        | Outlet: Maternity           |
+      | homePage              | button  | title | mainCategory | element          | pageName                    | filter | section | productName |
+      | https://www.asos.com/ | MEN     | Men   | Sale         | SALE Tracksuits  | Sale: Tracksuits & Joggers  | Brand  | Fila    | Fila        |
+      | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        | Outlet: Maternity           | Size   | UK 12   | Jaded       |

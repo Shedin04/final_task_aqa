@@ -95,19 +95,19 @@ public class DefinitionSteps {
         productCategoryPage.waitForAjaxToComplete(WAIT_FOR);
     }
 
-//    @And("User checks filters")
-//    public void checkFilters() {
-//        assertTrue(productCategoryPage.checkFilters());
-//    }
-//
-//    @And("User click {string} filter")
-//    public void clickFilter(String filter) {
-//        productCategoryPage.clickFilter(filter.substring(0,4));
-//    }
+    @And("User checks filters")
+    public void checkFilters() {
+        assertTrue(productCategoryPage.checkFilters());
+    }
+
+    @And("User click {string} filter")
+    public void clickFilter(String filter) {
+        productCategoryPage.clickFilter(filter.substring(0,4));
+    }
 
     @And("count of styles is {string}")
     public void checkCountOfStyles(String countOfStyles) {
-        assertEquals(productCategoryPage.getCountOfStyles().substring(0,2),countOfStyles.substring(0,2));
+        assertEquals(productCategoryPage.getCountOfStyles().length(),countOfStyles.length());
     }
 
     @And("User hover mouse over {string} category")
@@ -127,6 +127,21 @@ public class DefinitionSteps {
         assertEquals(productCategoryPage.getPageName()
                         .replace("Men's ","")
                         .replace("Women's ",""), name);
+    }
+
+    @And("User checks filter sections")
+    public void checkFilterSections() {
+        assertTrue(productCategoryPage.checkFilterSections());
+    }
+
+    @And("User selects filter section {string}")
+    public void selectFilterSection(String section) {
+        productCategoryPage.clickFilterSection(section);
+    }
+
+    @And("User checks that name of products contains {string}")
+    public void checkNameProductContainsFilter(String productName) {
+        assertTrue(productCategoryPage.checkProductNameContainsFilter(productName));
     }
 
     @After
