@@ -80,7 +80,7 @@ public class DefinitionSteps {
 
     @And("Page with title {string} is displayed")
     public void pageWithTitleIsDisplayed(String pageTitle) {
-        assertEquals(List.of(homePage.getTitle().split("'| ")).get(0),pageTitle);
+        assertEquals(List.of(homePage.getTitle().split("[' ]")).get(0),pageTitle);
     }
 
     @And("User checks goods features page")

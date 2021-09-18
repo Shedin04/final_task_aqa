@@ -27,7 +27,7 @@ public class BasePage {
     protected static List<WebElement> elementsInHeader;
 
     public BasePage(WebDriver driver) {
-        this.driver = driver;
+        BasePage.driver = driver;
         actions = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
