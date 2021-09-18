@@ -118,6 +118,15 @@ public class DefinitionSteps {
     @And("User clicks element {string} in header")
     public void clickElementInHeader(String element) {
         BasePage.clickHeaderElement(element);
+        productCategoryPage = pageFactoryManager.getProductCategoryPage();
+        productCategoryPage.waitForAjaxToComplete(WAIT_FOR);
+    }
+
+    @And("User checks {string} name of page")
+    public void checkPageName(String name) {
+        assertEquals(productCategoryPage.getPageName()
+                        .replace("Men's ","")
+                        .replace("Women's ",""), name);
     }
 
     @After

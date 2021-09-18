@@ -31,8 +31,9 @@ Feature: Smoke
     And Page with title '<title>' is displayed
     And User hover mouse over '<mainCategory>' category
     And User clicks element '<element>' in header
+    And User checks '<pageName>' name of page
 
     Examples:
-      | homePage              | button  | title | mainCategory | element          |
-      | https://www.asos.com/ | MEN     | Men   | Sale         | SALE Tracksuits  |
-      | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        |
+      | homePage              | button  | title | mainCategory | element          | pageName                    |
+      | https://www.asos.com/ | MEN     | Men   | Sale         | SALE Tracksuits  | Sale: Tracksuits & Joggers  |
+      | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        | Outlet: Maternity           |

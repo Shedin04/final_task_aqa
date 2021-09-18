@@ -13,12 +13,20 @@ public class ProductCategoryPage extends BasePage{
     @FindBy(xpath = "//p[contains(@class,'styleCount')]")
     private WebElement countOfStyles;
 
+    @FindBy(xpath = "//h1[contains(text(),'')]")
+    private WebElement pageName;
+
     public ProductCategoryPage(WebDriver driver) {
         super(driver);
     }
 
     public String getCountOfStyles(){
         return countOfStyles.getText().split(" ")[0];
+    }
+
+    public String getPageName(){
+        waitElement(pageName,WAIT_ELEMENTS);
+        return pageName.getText();
     }
 
     public boolean checkFilters(){
