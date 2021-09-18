@@ -26,6 +26,18 @@ public class BasePage {
     @FindBy(xpath = "//button[@aria-expanded='true']//following-sibling::div[1]//a")
     protected static List<WebElement> elementsInHeader;
 
+    @FindBy(xpath = "//input[@type='search']")
+    protected static WebElement searchBox;
+
+    @FindBy(xpath = "//button[@data-testid='search-button-inline']")
+    protected static WebElement submitSearchButton;
+
+    @FindBy(xpath = "//ul[@id='search-results']//button")
+    protected static List<WebElement> tips;
+
+    @FindBy(xpath = "//p[contains(@class,'styleCount')]")
+    private static WebElement countOfStyles;
+
     public BasePage(WebDriver driver) {
         BasePage.driver = driver;
         actions = new Actions(driver);
@@ -66,6 +78,27 @@ public class BasePage {
         elementsInHeader.stream().filter(el -> el.getText().equals(element)).findFirst().get().click();
     }
 
+    public static boolean checkSearchBox(){
+        return waitElement(searchBox,ELEMENT_TIMEOUT);
+    }
+
+    public static void sendKeysToSearchBox(String request){
+        searchBox.sendKeys(request);
+    }
+
+    public static void clickSubmitSearch(){
+        submitSearchButton.click();
+    }
+
+    public static String getCountOfStyles(){
+        return countOfStyles.getText().split(" ")[0];
+    }
+
+    public static boolean checkTips(){
+        return waitForElements(tips,WAIT_ELEMENTS);
+    }
+
+
     public void waitForPageLoadComplete(long timeToWait) {
         new WebDriverWait(driver, timeToWait).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
@@ -76,7 +109,7 @@ public class BasePage {
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return window.jQuery != undefined && jQuery.active == 0;"));
     }
 
-    public boolean waitElement(WebElement element, long timeToWait) {
+    public static boolean waitElement(WebElement element, long timeToWait) {
         try {
             new WebDriverWait(driver, timeToWait).until(ExpectedConditions.elementToBeClickable(element));
         }catch (Exception e){

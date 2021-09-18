@@ -6,10 +6,7 @@ import io.cucumber.java.en.And;
 import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pages.BasePage;
-import pages.GenderCategoriesPage;
-import pages.HomePage;
-import pages.ProductCategoryPage;
+import pages.*;
 
 import java.util.List;
 
@@ -25,6 +22,7 @@ public class DefinitionSteps {
     HomePage homePage;
     GenderCategoriesPage genderCategoriesPage;
     ProductCategoryPage productCategoryPage;
+    SearchPage searchPage;
 
     @Before
     public void testsSetUp() {
@@ -32,6 +30,11 @@ public class DefinitionSteps {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         pageFactoryManager = new PageFactoryManager(driver);
+    }
+
+    @After
+    public void tearDown() {
+        driver.quit();
     }
 
     @And("User opens {string} page")
@@ -100,14 +103,14 @@ public class DefinitionSteps {
         assertTrue(productCategoryPage.checkFilters());
     }
 
-    @And("User click {string} filter")
+    @And("User clicks {string} filter")
     public void clickFilter(String filter) {
         productCategoryPage.clickFilter(filter.substring(0,4));
     }
 
     @And("count of styles is {string}")
     public void checkCountOfStyles(String countOfStyles) {
-        assertEquals(productCategoryPage.getCountOfStyles().length(),countOfStyles.length());
+        assertEquals(BasePage.getCountOfStyles().length(),countOfStyles.length());
     }
 
     @And("User hover mouse over {string} category")
@@ -144,8 +147,30 @@ public class DefinitionSteps {
         assertTrue(productCategoryPage.checkProductNameContainsFilter(productName));
     }
 
-    @After
-    public void tearDown() {
-        driver.quit();
+    @And("User checks search box")
+    public void checkSearchBox() {
+        assertTrue(BasePage.checkSearchBox());
+    }
+
+    @And("User enters request {string}")
+    public void sendRequest(String request) {
+        BasePage.sendKeysToSearchBox(request);
+    }
+
+    @And("User clicks submit search button")
+    public void clickSubmitSearchButton() {
+        BasePage.clickSubmitSearch();
+        searchPage = pageFactoryManager.getSearchPage();
+        searchPage.waitForAjaxToComplete(WAIT_FOR);
+    }
+
+    @And("User checks that submitted {string}request is search result")
+    public void checksSearchResult(String request) {
+        assertTrue(searchPage.getResultOfSearch().replace("\"","").equals(request));
+    }
+
+    @And("User checks that tips appeared")
+    public void checkTipsAppeared() {
+        assertTrue(BasePage.checkTips());
     }
 }

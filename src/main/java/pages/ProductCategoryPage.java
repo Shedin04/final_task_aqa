@@ -13,9 +13,6 @@ public class ProductCategoryPage extends BasePage{
     @FindBy(xpath = "//button[@aria-expanded='true']//following-sibling::div[@data-filter-dropdown='true']//li")
     private List<WebElement> filterSections;
 
-    @FindBy(xpath = "//p[contains(@class,'styleCount')]")
-    private WebElement countOfStyles;
-
     @FindBy(xpath = "//h1[contains(text(),'')]")
     private WebElement pageName;
 
@@ -24,10 +21,6 @@ public class ProductCategoryPage extends BasePage{
 
     public ProductCategoryPage(WebDriver driver) {
         super(driver);
-    }
-
-    public String getCountOfStyles(){
-        return countOfStyles.getText().split(" ")[0];
     }
 
     public String getPageName(){

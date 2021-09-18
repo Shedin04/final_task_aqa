@@ -13,4 +13,6 @@ public class PageFactoryManager {
     public GenderCategoriesPage getGenderCategoriesPage(){return new GenderCategoriesPage(driver);}
 
     public ProductCategoryPage getProductCategoryPage() {return new ProductCategoryPage(driver);}
+
+    public SearchPage getSearchPage() {return new SearchPage(driver);}
 }

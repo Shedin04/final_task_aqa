@@ -33,7 +33,7 @@ Feature: Smoke
     And User clicks element '<element>' in header
     And User checks '<pageName>' name of page
     And User checks filters
-    When User click '<filter>' filter
+    When User clicks '<filter>' filter
     And User checks filter sections
     And User selects filter section '<section>'
     Then User checks that name of products contains '<productName>'
@@ -42,3 +42,17 @@ Feature: Smoke
       | homePage              | button  | title | mainCategory | element          | pageName                    | filter | section | productName |
       | https://www.asos.com/ | MEN     | Men   | Sale         | SALE Tracksuits  | Sale: Tracksuits & Joggers  | Brand  | Fila    | Fila        |
       | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        | Outlet: Maternity           | Size   | UK 12   | Jaded       |
+
+  Scenario Outline: User can find any product through search
+    Given User opens '<homePage>' page
+    And User checks search box
+    When User enters request '<request>'
+    And User checks that tips appeared
+    And User clicks submit search button
+    Then User checks that submitted '<request>'request is search result
+    And count of styles is '<foundStyles>'
+
+    Examples:
+      | homePage              | request               | foundStyles |
+      | https://www.asos.com/ | Under Armour          | 957         |
+      | https://www.asos.com/ | Paris Saint Germain   | 16          |
