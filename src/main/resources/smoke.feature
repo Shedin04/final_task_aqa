@@ -47,12 +47,13 @@ Feature: Smoke
     Given User opens '<homePage>' page
     And User checks search box
     When User enters request '<request>'
-    And User checks that tips appeared
     And User clicks submit search button
-    Then User checks that submitted '<request>'request is search result
+    Then User checks that search result '<result>'
     And count of styles is '<foundStyles>'
 
     Examples:
-      | homePage              | request               | foundStyles |
-      | https://www.asos.com/ | Under Armour          | 957         |
-      | https://www.asos.com/ | Paris Saint Germain   | 16          |
+      | homePage              | request               | result                      | foundStyles |
+      | https://www.asos.com/ | Under Armour          | Under Armour                | 957         |
+      | https://www.asos.com/ | Paris Saint Germain   | Paris Saint Germain         | 16          |
+      | https://www.asos.com/ | 4qrqwrw45151          | NOTHING MATCHES YOUR SEARCH | 0           |
+      | https://www.asos.com/ | New Balance           | New Balance                 | 712         |

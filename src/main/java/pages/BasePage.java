@@ -32,9 +32,6 @@ public class BasePage {
     @FindBy(xpath = "//button[@data-testid='search-button-inline']")
     protected static WebElement submitSearchButton;
 
-    @FindBy(xpath = "//ul[@id='search-results']//button")
-    protected static List<WebElement> tips;
-
     @FindBy(xpath = "//p[contains(@class,'styleCount')]")
     private static WebElement countOfStyles;
 
@@ -93,11 +90,6 @@ public class BasePage {
     public static String getCountOfStyles(){
         return countOfStyles.getText().split(" ")[0];
     }
-
-    public static boolean checkTips(){
-        return waitForElements(tips,WAIT_ELEMENTS);
-    }
-
 
     public void waitForPageLoadComplete(long timeToWait) {
         new WebDriverWait(driver, timeToWait).until(

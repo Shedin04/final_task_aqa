@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +14,10 @@ public class SearchPage extends BasePage{
     }
 
     public String getResultOfSearch(){
-        return resultOfSearch.getText();
+        try {
+            return resultOfSearch.getText().replace("\"", "");
+        }catch (NoSuchElementException e){
+            return "NOTHING MATCHES YOUR SEARCH";
+        }
     }
 }

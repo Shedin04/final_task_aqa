@@ -110,7 +110,11 @@ public class DefinitionSteps {
 
     @And("count of styles is {string}")
     public void checkCountOfStyles(String countOfStyles) {
-        assertEquals(BasePage.getCountOfStyles().length(),countOfStyles.length());
+        try {
+            assertEquals(BasePage.getCountOfStyles().length(),countOfStyles.length());
+        }catch (Exception e) {
+            assertEquals("0",countOfStyles);
+        }
     }
 
     @And("User hover mouse over {string} category")
@@ -164,13 +168,8 @@ public class DefinitionSteps {
         searchPage.waitForAjaxToComplete(WAIT_FOR);
     }
 
-    @And("User checks that submitted {string}request is search result")
-    public void checksSearchResult(String request) {
-        assertTrue(searchPage.getResultOfSearch().replace("\"","").equals(request));
-    }
-
-    @And("User checks that tips appeared")
-    public void checkTipsAppeared() {
-        assertTrue(BasePage.checkTips());
+    @And("User checks that search result {string}")
+    public void checksSearchResult(String result) {
+        assertEquals(result, searchPage.getResultOfSearch());
     }
 }
