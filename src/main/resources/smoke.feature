@@ -3,7 +3,7 @@ Feature: Smoke
   I would like to check that the acute functionalities of program is working fine
   I can do this by performing testing of the software product
 
-  Scenario Outline: User entering the site can select the required category of goods and check count of found styles (rounded)
+  Scenario Outline: User entering the site can select the required category of goods and check count of found styles
     Given User opens '<homePage>' page
     And User checks central buttons
     And User checks image on homepage
@@ -70,3 +70,36 @@ Feature: Smoke
       | homePage              | request             | suggestCorrection   | productName |
       | https://www.asos.com/ | Manckester          | manchester          | Puma        |
       | https://www.asos.com/ | lil & scott         | lyle scott          | Lyle        |
+
+  Scenario Outline: User can switch location anywhere
+                    As result, region and currency should be changed
+    Given User opens '<homePage>' page
+    And User checks buttons for changing location
+    And User checks central buttons
+    And User clicks type of shop '<button>' button
+    When User clicks <buttonPosition> changing location button
+    And User selects location '<location>'
+    And User selects currency '<currency>'
+    And User clicks save location button
+
+    Examples:
+      | homePage              | button     | buttonPosition | location | currency |
+      | https://www.asos.com/ | SHOP MEN   | 0              | Poland   | EUR      |
+      | https://www.asos.com/ | SHOP WOMEN | 1              | Georgia  | GBP      |
+
+  Scenario Outline: User can join and login on site
+    Given User opens '<homePage>' page
+    And User checks profile button
+    And User opens '<linkName>' link in profile dropdown
+    And Page with title 'ASOS' is displayed
+    And User checks email field
+    And User checks password field
+    And User enters email '<email>'
+    And User enters password '<password>'
+    When User clicks submit button
+    Then Page with title '<titleAfter>' is displayed
+
+    Examples:
+      | homePage              | linkName   | email                 | password   | titleAfter |
+      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | qWeRtY0987 | ASOS       |
+      | https://www.asos.com/ | My Orders  | dmytro.shedin@nure.ua | qWeRtY0987 | My         |

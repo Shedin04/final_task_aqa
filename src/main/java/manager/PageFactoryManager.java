@@ -14,5 +14,9 @@ public class PageFactoryManager {
 
     public ProductCategoryPage getProductCategoryPage() {return new ProductCategoryPage(driver);}
 
-    public SearchPage getSearchPage() {return new SearchPage(driver);}
+    public SearchPage getSearchPage() {return new SearchPage(driver); }
+
+    public LoginPage getLoginPage(){return new LoginPage(driver);}
+
+    public MyOrdersPage getMyOrdersPage(){return new MyOrdersPage(driver);}
 }

@@ -3,7 +3,6 @@ package stepdefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
 import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,6 +23,8 @@ public class DefinitionSteps {
     GenderCategoriesPage genderCategoriesPage;
     ProductCategoryPage productCategoryPage;
     SearchPage searchPage;
+    LoginPage loginPage;
+    MyOrdersPage myOrdersPage;
 
     @Before
     public void testsSetUp() {
@@ -42,7 +43,7 @@ public class DefinitionSteps {
     public void openPage(final String url) {
         homePage = pageFactoryManager.getHomePage();
         homePage.openHomePage(url);
-        homePage.waitForPageLoadComplete(WAIT_FOR);
+        BasePage.waitForPageLoadComplete(WAIT_FOR);
     }
 
     @And("User checks header buttons")
@@ -74,7 +75,7 @@ public class DefinitionSteps {
     public void clickTypeOfShopCentralButtons(String button) {
         homePage.clickCentralShopButton(button);
         genderCategoriesPage = pageFactoryManager.getGenderCategoriesPage();
-        genderCategoriesPage.waitForAjaxToComplete(WAIT_FOR);
+        BasePage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks image on homepage")
@@ -84,7 +85,8 @@ public class DefinitionSteps {
 
     @And("Page with title {string} is displayed")
     public void pageWithTitleIsDisplayed(String pageTitle) {
-        assertEquals(List.of(homePage.getTitle().split("[' ]")).get(0),pageTitle);
+        if (genderCategoriesPage != null || homePage != null) assertEquals(List.of(BasePage.getTitle().split("[' ]")).get(0),pageTitle);
+        else assertEquals(BasePage.getTitle(),pageTitle);
     }
 
     @And("User checks goods features page")
@@ -96,7 +98,7 @@ public class DefinitionSteps {
     public void clickFeatureButton(String feature) {
         genderCategoriesPage.clickProductFeature(feature);
         productCategoryPage = pageFactoryManager.getProductCategoryPage();
-        productCategoryPage.waitForAjaxToComplete(WAIT_FOR);
+        BasePage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks filters")
@@ -127,7 +129,7 @@ public class DefinitionSteps {
     public void clickElementInHeader(String element) {
         BasePage.clickHeaderElement(element);
         productCategoryPage = pageFactoryManager.getProductCategoryPage();
-        productCategoryPage.waitForAjaxToComplete(WAIT_FOR);
+        BasePage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks {string} name of page")
@@ -166,7 +168,7 @@ public class DefinitionSteps {
     public void clickSubmitSearchButton() {
         BasePage.clickSubmitSearch();
         searchPage = pageFactoryManager.getSearchPage();
-        searchPage.waitForAjaxToComplete(WAIT_FOR);
+        BasePage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks that search result {string}")
@@ -174,8 +176,76 @@ public class DefinitionSteps {
         assertEquals(result, searchPage.getResultOfSearch());
     }
 
-    @Then("User checks that proposed request correction is {string}")
+    @And("User checks that proposed request correction is {string}")
     public void checkRequestCorrection(String suggestCorrection) {
         assertEquals(searchPage.getCorrectedRequest(),suggestCorrection);
+    }
+
+    @And("User checks buttons for changing location")
+    public void checkButtonsForChangingLocation() {
+        assertTrue(BasePage.checkLocationChangers());
+    }
+
+    @And("User clicks {int} changing location button")
+    public void clickChangingLocationButton(int buttonPosition) {
+        BasePage.clickLocationChanger(buttonPosition);
+    }
+
+    @And("User selects location {string}")
+    public void selectLocation(String location) {
+        BasePage.selectLocation(location);
+    }
+
+    @And("User selects currency {string}")
+    public void selectsCurrency(String currency) {
+        BasePage.selectCurrency(currency);
+    }
+
+    @And("User clicks save location button")
+    public void clickSaveLocationButton() {
+        BasePage.clickSaveLocationButton();
+    }
+
+    @And("User checks profile button")
+    public void checkProfileButton() {
+        assertTrue(BasePage.checkProfileButton());
+    }
+
+    @And("User opens {string} link in profile dropdown")
+    public void openLinkInProfileDropdown(String linkName) {
+        BasePage.clickProfileButton(linkName);
+        loginPage = pageFactoryManager.getLoginPage();
+        BasePage.waitForAjaxToComplete(WAIT_FOR);
+    }
+
+    @And("User checks email field")
+    public void checkEmailField() {
+        assertTrue(loginPage.checkEmailField());
+    }
+
+    @And("User checks password field")
+    public void checkPasswordField() {
+        assertTrue(loginPage.checkPasswordField());
+    }
+
+    @And("User enters email {string}")
+    public void enterEmail(String email) {
+        loginPage.inputEmail(email);
+    }
+
+    @And("User enters password {string}")
+    public void enterPassword(String password) {
+        loginPage.inputPassword(password);
+    }
+
+    @And("User clicks submit button")
+    public void clickSubmitButton() {
+        loginPage.clickSubmitButton();
+        myOrdersPage = pageFactoryManager.getMyOrdersPage();
+    }
+
+    @And("User checks {string} in profile dropdown")
+    public void checkUsernameInProfileDropdown(String username) {
+        assertEquals(BasePage.getUsername(), username);
     }
 }
