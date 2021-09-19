@@ -21,4 +21,6 @@ public class PageFactoryManager {
     public ProductPage getProductPage(){return new ProductPage(driver);}
 
     public WishlistPage getWishlistPage(){return new WishlistPage(driver);}
+
+    public BagPage getBagPage(){return new BagPage(driver);}
 }

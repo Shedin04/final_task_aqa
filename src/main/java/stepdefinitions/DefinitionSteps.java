@@ -27,6 +27,7 @@ public class DefinitionSteps {
     LoginPage loginPage;
     ProductPage productPage;
     WishlistPage wishlistPage;
+    BagPage bagPage;
 
     @Before
     public void testsSetUp() {
@@ -306,8 +307,49 @@ public class DefinitionSteps {
         wishlistPage = pageFactoryManager.getWishlistPage();
     }
 
-    @Then("User checks that product name in wishlist equals {string}")
+    @And("User checks that product name in wishlist equals {string}")
     public void checkThatProductNameInWishlistEqualsProductName(String productName) { ;
         assertEquals(wishlistPage.getProductNameInWishlist(), productName);
+    }
+
+    @And("User checks add to bag button")
+    public void checkAddToBagButton() {
+        assertTrue(productPage.checkAddToBagButton());
+    }
+
+    @And("User clicks add to bag button")
+    public void clickAddToBagButton() {
+        productPage.clickAddToBagButton();
+    }
+
+    @And("User checks that colour select field is {string}")
+    public void checkThatColourSelectFieldIs(String colourStatus) {
+        assertEquals(productPage.getColourSelectFieldStatus(), colourStatus);
+    }
+
+    @And("User checks that size select field is {string}")
+    public void checkThatSizeSelectFieldIs(String sizeStatus) {
+        assertEquals(productPage.getSizeSelectFieldStatus(), sizeStatus);
+    }
+
+    @And("User selects product {string} colour")
+    public void selectProductColour(String colour) {
+        productPage.selectColour(colour);
+    }
+
+    @And("User selects product {string} size")
+    public void selectProductSize(String size) {
+        productPage.selectSize(size);
+    }
+
+    @And("User opens bag page")
+    public void openBagPage() {
+        BasePage.openBagPage();
+        bagPage = pageFactoryManager.getBagPage();
+    }
+
+    @Then("Users checks that bag item name equals {string}")
+    public void checkBagItemNameEquals(String productName) {
+        assertTrue(bagPage.checkBagItem(productName));
     }
 }

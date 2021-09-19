@@ -68,6 +68,9 @@ public class BasePage {
     @FindBy(xpath = "//div[contains(*,'ASOS') and contains(*,'2021')]")
     private static WebElement copyrightsTag;
 
+    @FindBy(xpath = "//a[@data-test-id='bag-link']")
+    private static WebElement viewBagButton;
+
     public BasePage(WebDriver driver) {
         BasePage.driver = driver;
         actions = new Actions(driver);
@@ -214,5 +217,12 @@ public class BasePage {
         waitForElements(linksInProfileList,WAIT_ELEMENTS);
         waitElement(username, WAIT_EL);
         return username.getText().replace("Hi ","");
+    }
+
+    public static void openBagPage(){
+        waitElement(headerButtonsWithoutProfile.get(4),WAIT_EL);
+        actions.moveToElement(headerButtonsWithoutProfile.get(4)).build().perform();
+        waitElement(viewBagButton,WAIT_EL);
+        viewBagButton.click();
     }
 }

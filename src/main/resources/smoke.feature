@@ -139,3 +139,21 @@ Feature: Smoke
       | homePage              | button | mainCategory | element   | productName                            |
       | https://www.asos.com/ | MEN    | Accessories  | Casio     | G Shock unisex smart watch in yellow   |
       | https://www.asos.com/ | WOMEN  | Face + Body  | Benefit   | Benefit Goof Proof Brow Pencil         |
+
+  Scenario Outline: User can add product to bag
+    Given User opens '<homePage>' page
+    And User enters request '<request>'
+    And User clicks submit search button
+    And User selects product with '<productName>' name
+    And User checks add to bag button
+    And User checks that colour select field is '<colourStatus>'
+    And User checks that size select field is '<sizeStatus>'
+    And User selects product '<size>' size
+    When User clicks add to bag button
+    And User opens bag page
+    Then Users checks that bag item name equals '<productName>'
+
+    Examples:
+      | homePage              | request     | productName                                             | colourStatus   | sizeStatus   | size        |
+      | https://www.asos.com/ | Mancester   | Puma Football Manchester City 21/22 Home shirt in blue  | unavailable    | available    | EU 48 - 50  |
+      | https://www.asos.com/ | New Balance | New Balance 574 wedge trainers in zebra print           | unavailable    | available    | EU 37.5     |
