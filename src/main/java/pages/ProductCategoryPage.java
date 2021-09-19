@@ -16,9 +16,6 @@ public class ProductCategoryPage extends BasePage{
     @FindBy(xpath = "//h1[contains(text(),'')]")
     private WebElement pageName;
 
-    @FindBy(xpath = "//div[contains(@data-auto-id,'Description')]")
-    private List<WebElement> goodsDescription;
-
     public ProductCategoryPage(WebDriver driver) {
         super(driver);
     }
@@ -41,10 +38,5 @@ public class ProductCategoryPage extends BasePage{
     public void clickFilterSection(String section){
         actions.click(filterSections.stream().filter(sect -> sect.getText()
                 .split("\\(")[0].equals(section)).findFirst().get()).perform();
-    }
-
-    public boolean checkProductNameContainsFilter(String productName){
-        waitForElements(goodsDescription,WAIT_ELEMENTS);
-        return goodsDescription.stream().anyMatch(product -> product.getText().split(" ")[0].equals(productName));
     }
 }

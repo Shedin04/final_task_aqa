@@ -35,6 +35,9 @@ public class BasePage {
     @FindBy(xpath = "//p[contains(@class,'styleCount')]")
     private static WebElement countOfStyles;
 
+    @FindBy(xpath = "//div[contains(@data-auto-id,'Description')]")
+    private static List<WebElement> goodsDescription;
+
     public BasePage(WebDriver driver) {
         BasePage.driver = driver;
         actions = new Actions(driver);
@@ -89,6 +92,11 @@ public class BasePage {
 
     public static String getCountOfStyles(){
         return countOfStyles.getText().split(" ")[0];
+    }
+
+    public static boolean checkProductName(String productName){
+        waitForElements(goodsDescription,WAIT_ELEMENTS);
+        return goodsDescription.stream().anyMatch(product -> product.getText().split(" ")[0].equals(productName));
     }
 
     public void waitForPageLoadComplete(long timeToWait) {

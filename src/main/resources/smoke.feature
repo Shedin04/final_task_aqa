@@ -57,3 +57,16 @@ Feature: Smoke
       | https://www.asos.com/ | Paris Saint Germain   | Paris Saint Germain         | 16          |
       | https://www.asos.com/ | 4qrqwrw45151          | NOTHING MATCHES YOUR SEARCH | 0           |
       | https://www.asos.com/ | New Balance           | New Balance                 | 712         |
+
+  Scenario Outline: User entering request with an error receives required goods
+    Given User opens '<homePage>' page
+    And User checks search box
+    When User enters request '<request>'
+    And User clicks submit search button
+    Then User checks that proposed request correction is '<suggestCorrection>'
+    And User checks that name of products contains '<productName>'
+
+    Examples:
+      | homePage              | request             | suggestCorrection   | productName |
+      | https://www.asos.com/ | Manckester          | manchester          | Puma        |
+      | https://www.asos.com/ | lil & scott         | lyle scott          | Lyle        |

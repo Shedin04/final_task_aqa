@@ -3,6 +3,7 @@ package stepdefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -147,8 +148,8 @@ public class DefinitionSteps {
     }
 
     @And("User checks that name of products contains {string}")
-    public void checkNameProductContainsFilter(String productName) {
-        assertTrue(productCategoryPage.checkProductNameContainsFilter(productName));
+    public void checkProductName(String productName) {
+        assertTrue(BasePage.checkProductName(productName));
     }
 
     @And("User checks search box")
@@ -169,7 +170,12 @@ public class DefinitionSteps {
     }
 
     @And("User checks that search result {string}")
-    public void checksSearchResult(String result) {
+    public void checkSearchResult(String result) {
         assertEquals(result, searchPage.getResultOfSearch());
+    }
+
+    @Then("User checks that proposed request correction is {string}")
+    public void checkRequestCorrection(String suggestCorrection) {
+        assertEquals(searchPage.getCorrectedRequest(),suggestCorrection);
     }
 }
