@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 public class BasePage {
-    protected final static int ELEMENT_TIMEOUT = 10;
+    protected final static int WAIT_EL = 10;
     protected final static int WAIT_ELEMENTS = 15;
     protected static WebDriver driver;
     protected static Actions actions;
@@ -103,7 +103,9 @@ public class BasePage {
     }
 
     public static void waitForCopyrightsTeg(){
-        new WebDriverWait(driver,WAIT_ELEMENTS).until(ExpectedConditions.elementToBeClickable(copyrightsTag));
+        try {
+            new WebDriverWait(driver,WAIT_ELEMENTS).until(ExpectedConditions.elementToBeClickable(copyrightsTag));
+        }catch (Exception ignored){}
     }
 
     public static String getTitle(){
@@ -131,17 +133,21 @@ public class BasePage {
         }).findFirst().get().click();
     }
 
+    public static void clickWishlistHeaderButton(){
+        headerButtonsWithoutProfile.get(3).click();
+    }
+
     public static void selectShopMainCategory(String category){
         actions.moveToElement(headerShopMainCategories.stream().filter(categ -> categ.getText().equals(category)).findFirst().get()).perform();
     }
 
     public static void clickHeaderElement(String element){
-        waitForElements(elementsInHeader,ELEMENT_TIMEOUT);
+        waitForElements(elementsInHeader, WAIT_EL);
         elementsInHeader.stream().filter(el -> el.getText().equals(element)).findFirst().get().click();
     }
 
     public static boolean checkSearchBox(){
-        return waitElement(searchBox,ELEMENT_TIMEOUT);
+        return waitElement(searchBox, WAIT_EL);
     }
 
     public static void sendKeysToSearchBox(String request){
@@ -161,27 +167,31 @@ public class BasePage {
         return goodsDescription.stream().anyMatch(product -> product.getText().split(" ")[0].equals(productName));
     }
 
+    public static void selectProductWithName(String productName){
+        goodsDescription.stream().filter(product -> product.getText().equals(productName)).findFirst().get().click();
+    }
+
     public static boolean checkLocationChangers(){
        return waitForElements(locationChangers,WAIT_ELEMENTS);
     }
 
     public static void clickLocationChanger(int buttonPosition){
         locationChangers.get(buttonPosition).click();
-        waitElement(selectCountryField,ELEMENT_TIMEOUT);
+        waitElement(selectCountryField, WAIT_EL);
     }
 
     public static void selectLocation(String location){
         selectCountryField.click();
         waitForElements(countries,WAIT_ELEMENTS);
         countries.stream().filter(cntry -> cntry.getText().equals(location)).findFirst().get().click();
-        waitElement(selectCurrencyField, ELEMENT_TIMEOUT);
+        waitElement(selectCurrencyField, WAIT_EL);
     }
 
     public static void selectCurrency(String currency){
         selectCurrencyField.click();
         waitForElements(currencies,WAIT_ELEMENTS);
         currencies.stream().filter(curr -> curr.getText().split(" ")[1].equals(currency)).findFirst().get().click();
-        waitElement(selectCountryField, ELEMENT_TIMEOUT);
+        waitElement(selectCountryField, WAIT_EL);
     }
 
     public static void clickSaveLocationButton(){
@@ -190,7 +200,7 @@ public class BasePage {
     }
 
     public static boolean checkProfileButton(){
-        return waitElement(profileButton,ELEMENT_TIMEOUT);
+        return waitElement(profileButton, WAIT_EL);
     }
 
     public static void clickProfileButton(String linkName){
@@ -202,7 +212,7 @@ public class BasePage {
     public static String getUsername(){
         actions.moveToElement(profileButton).perform();
         waitForElements(linksInProfileList,WAIT_ELEMENTS);
-        waitElement(username,ELEMENT_TIMEOUT);
+        waitElement(username, WAIT_EL);
         return username.getText().replace("Hi ","");
     }
 }

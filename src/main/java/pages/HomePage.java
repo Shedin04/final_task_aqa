@@ -23,7 +23,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean checkPicture(){
-        return waitElement(pictureOnHomePage,ELEMENT_TIMEOUT);
+        return waitElement(pictureOnHomePage, WAIT_EL);
     }
 
     public boolean checkCentralButtons(){

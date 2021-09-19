@@ -41,7 +41,7 @@ Feature: Smoke
     Examples:
       | homePage              | button  | title | mainCategory | element          | pageName                    | filter | section | productName |
       | https://www.asos.com/ | MEN     | Men   | Sale         | SALE Tracksuits  | Sale: Tracksuits & Joggers  | Brand  | Fila    | Fila        |
-      | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        | Outlet: Maternity           | Size   | UK 12   | Jaded       |
+      | https://www.asos.com/ | WOMEN   | Women | Outlet       | Maternity        | Outlet: Maternity           | Size   | UK 10   | Jaded       |
 
   Scenario Outline: User can find any product through search
     Given User opens '<homePage>' page
@@ -97,9 +97,45 @@ Feature: Smoke
     And User enters email '<email>'
     And User enters password '<password>'
     When User clicks submit button
-    Then Page with title '<titleAfter>' is displayed
+    Then Sign In is '<status>'
+    And Page with title '<titleAfter>' is displayed
 
     Examples:
-      | homePage              | linkName   | email                 | password   | titleAfter |
-      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | qWeRtY0987 | ASOS       |
-      | https://www.asos.com/ | My Orders  | dmytro.shedin@nure.ua | qWeRtY0987 | My         |
+      | homePage              | linkName   | email                 | password   | status    | titleAfter |
+      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | qWeRtY0987 | success   | ASOS       |
+      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | 11eRtY0987 | fail      | ASOS       |
+      | https://www.asos.com/ | My Orders  | dmytro.shedin@nure.ua | qWeRtY0987 | success   | My         |
+      | https://www.asos.com/ | My Orders  | usermail@i.ua         | qWeRtY0987 | fail      | ASOS       |
+
+  Scenario Outline: User can reset password
+    Given User opens '<homePage>' page
+    And User checks profile button
+    And User opens '<linkName>' link in profile dropdown
+    And User checks reset password link
+    And User clicks reset password link
+    And User checks reset password button
+    And User enters email '<email>'
+    When User clicks reset password button
+    Then Message 'Reset password link sent' is shown
+
+    Examples:
+      | homePage              | linkName   | email                      |
+      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua      |
+      | https://www.asos.com/ | My Orders  | sfasfsafa@mail.com         |
+
+  Scenario Outline: User can add product in wishlist
+    Given User opens '<homePage>' page
+    And User clicks header '<button>' button
+    And User hover mouse over '<mainCategory>' category
+    And User clicks element '<element>' in header
+    And User selects product with '<productName>' name
+    And User checks that product hero equals '<productName>' product name
+    And User checks that wishlist button is displayed
+    When User clicks wishlist button
+    And User clicks wishlistHeaderButton
+    Then User checks that product name in wishlist equals '<productName>'
+
+    Examples:
+      | homePage              | button | mainCategory | element   | productName                            |
+      | https://www.asos.com/ | MEN    | Accessories  | Casio     | G Shock unisex smart watch in yellow   |
+      | https://www.asos.com/ | WOMEN  | Face + Body  | Benefit   | Benefit Goof Proof Brow Pencil         |

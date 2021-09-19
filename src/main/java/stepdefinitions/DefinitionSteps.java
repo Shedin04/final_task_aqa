@@ -3,12 +3,13 @@ package stepdefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.*;
 
-import java.util.List;
+import java.util.Locale;
 
 import static io.github.bonigarcia.wdm.WebDriverManager.chromedriver;
 import static org.testng.Assert.assertEquals;
@@ -21,10 +22,11 @@ public class DefinitionSteps {
     PageFactoryManager pageFactoryManager;
     HomePage homePage;
     GenderCategoriesPage genderCategoriesPage;
-    ProductCategoryPage productCategoryPage;
+    ProductsCategoryPage productsCategoryPage;
     SearchPage searchPage;
     LoginPage loginPage;
-    MyOrdersPage myOrdersPage;
+    ProductPage productPage;
+    WishlistPage wishlistPage;
 
     @Before
     public void testsSetUp() {
@@ -85,8 +87,7 @@ public class DefinitionSteps {
 
     @And("Page with title {string} is displayed")
     public void pageWithTitleIsDisplayed(String pageTitle) {
-        if (genderCategoriesPage != null || homePage != null) assertEquals(List.of(BasePage.getTitle().split("[' ]")).get(0),pageTitle);
-        else assertEquals(BasePage.getTitle(),pageTitle);
+        assertEquals(BasePage.getTitle().split("[' ]")[0],pageTitle);
     }
 
     @And("User checks goods features page")
@@ -97,18 +98,18 @@ public class DefinitionSteps {
     @And("User clicks feature {string} button")
     public void clickFeatureButton(String feature) {
         genderCategoriesPage.clickProductFeature(feature);
-        productCategoryPage = pageFactoryManager.getProductCategoryPage();
+        productsCategoryPage = pageFactoryManager.getProductCategoryPage();
         BasePage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks filters")
     public void checkFilters() {
-        assertTrue(productCategoryPage.checkFilters());
+        assertTrue(productsCategoryPage.checkFilters());
     }
 
     @And("User clicks {string} filter")
     public void clickFilter(String filter) {
-        productCategoryPage.clickFilter(filter.substring(0,4));
+        productsCategoryPage.clickFilter(filter.substring(0,4));
     }
 
     @And("count of styles is {string}")
@@ -128,25 +129,25 @@ public class DefinitionSteps {
     @And("User clicks element {string} in header")
     public void clickElementInHeader(String element) {
         BasePage.clickHeaderElement(element);
-        productCategoryPage = pageFactoryManager.getProductCategoryPage();
+        productsCategoryPage = pageFactoryManager.getProductCategoryPage();
         BasePage.waitForAjaxToComplete(WAIT_FOR);
     }
 
     @And("User checks {string} name of page")
     public void checkPageName(String name) {
-        assertEquals(productCategoryPage.getPageName()
+        assertEquals(productsCategoryPage.getPageName()
                         .replace("Men's ","")
                         .replace("Women's ",""), name);
     }
 
     @And("User checks filter sections")
     public void checkFilterSections() {
-        assertTrue(productCategoryPage.checkFilterSections());
+        assertTrue(productsCategoryPage.checkFilterSections());
     }
 
     @And("User selects filter section {string}")
     public void selectFilterSection(String section) {
-        productCategoryPage.clickFilterSection(section);
+        productsCategoryPage.clickFilterSection(section);
     }
 
     @And("User checks that name of products contains {string}")
@@ -241,11 +242,72 @@ public class DefinitionSteps {
     @And("User clicks submit button")
     public void clickSubmitButton() {
         loginPage.clickSubmitButton();
-        myOrdersPage = pageFactoryManager.getMyOrdersPage();
     }
 
     @And("User checks {string} in profile dropdown")
     public void checkUsernameInProfileDropdown(String username) {
         assertEquals(BasePage.getUsername(), username);
+    }
+
+    @And("Sign In is {string}")
+    public void checkLoginStatus(String status) {
+        assertEquals(loginPage.checkLoginStatus(), status);
+    }
+
+    @And("User checks reset password link")
+    public void checkResetPasswordLink() {
+        assertTrue(loginPage.checkResetPasswordLink());
+    }
+
+    @And("User clicks reset password link")
+    public void clickResetPasswordLink() {
+        loginPage.clickResetPasswordLink();
+    }
+
+    @And("User checks reset password button")
+    public void checkResetPasswordButton() {
+        loginPage.checkResetPasswordButton();
+    }
+
+    @And("User clicks reset password button")
+    public void clickResetPasswordButton() {
+        loginPage.clickResetPasswordButton();
+    }
+
+    @And("Message {string} is shown")
+    public void checkMassageResetPassword(String message) {
+        assertEquals(loginPage.checkResetPasswordLinkSentMessage(), message.toUpperCase(Locale.ROOT));
+    }
+
+    @And("User selects product with {string} name")
+    public void selectProductWithName(String productName) {
+        BasePage.selectProductWithName(productName);
+        productPage = pageFactoryManager.getProductPage();
+    }
+
+    @And("User checks that product hero equals {string} product name")
+    public void checkProductHero(String productName) {
+        assertEquals(productPage.getProductHero(), productName);
+    }
+
+    @And("User checks that wishlist button is displayed")
+    public void checkWishlistButton() {
+        assertTrue(productPage.checkWishlistButton());
+    }
+
+    @And("User clicks wishlist button")
+    public void clickWishlistButton() {
+        productPage.clickWishlistButton();
+    }
+
+    @And("User clicks wishlistHeaderButton")
+    public void clickWishlistHeaderButton() {
+        BasePage.clickWishlistHeaderButton();
+        wishlistPage = pageFactoryManager.getWishlistPage();
+    }
+
+    @Then("User checks that product name in wishlist equals {string}")
+    public void checkThatProductNameInWishlistEqualsProductName(String productName) { ;
+        assertEquals(wishlistPage.getProductNameInWishlist(), productName);
     }
 }

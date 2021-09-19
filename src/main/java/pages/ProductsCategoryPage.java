@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class ProductCategoryPage extends BasePage{
+public class ProductsCategoryPage extends BasePage{
     @FindBy(xpath = "//div[@aria-label='Filters']//button")
     private List<WebElement> filters;
 
@@ -16,7 +16,7 @@ public class ProductCategoryPage extends BasePage{
     @FindBy(xpath = "//h1[contains(text(),'')]")
     private WebElement pageName;
 
-    public ProductCategoryPage(WebDriver driver) {
+    public ProductsCategoryPage(WebDriver driver) {
         super(driver);
     }
 

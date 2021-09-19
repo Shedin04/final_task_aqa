@@ -12,11 +12,13 @@ public class PageFactoryManager {
 
     public GenderCategoriesPage getGenderCategoriesPage(){return new GenderCategoriesPage(driver);}
 
-    public ProductCategoryPage getProductCategoryPage() {return new ProductCategoryPage(driver);}
+    public ProductsCategoryPage getProductCategoryPage() {return new ProductsCategoryPage(driver);}
 
     public SearchPage getSearchPage() {return new SearchPage(driver); }
 
     public LoginPage getLoginPage(){return new LoginPage(driver);}
 
-    public MyOrdersPage getMyOrdersPage(){return new MyOrdersPage(driver);}
+    public ProductPage getProductPage(){return new ProductPage(driver);}
+
+    public WishlistPage getWishlistPage(){return new WishlistPage(driver);}
 }
