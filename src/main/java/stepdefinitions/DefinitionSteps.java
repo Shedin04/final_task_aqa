@@ -203,6 +203,11 @@ public class DefinitionSteps {
         BasePage.selectLocation(location);
     }
 
+    @And("User checks that current location is {string}")
+    public void checkThatCurrentLocationIs(String location) {
+        assertEquals(BasePage.getCurrentLocation(), location);
+    }
+
     @And("User selects currency {string}")
     public void selectsCurrency(String currency) {
         BasePage.selectCurrency(currency);

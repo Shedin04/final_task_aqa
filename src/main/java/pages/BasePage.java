@@ -44,6 +44,9 @@ public class BasePage {
     @FindBy(xpath = "//div[@data-testid='country-selector']/button")
     private static List<WebElement> locationChangers;
 
+    @FindBy(xpath = "//div[@data-testid='country-selector']/button/img[contains(alt,'')]")
+    private static List<WebElement> locationChangersImg;
+
     @FindBy(xpath = "//select[@id='country']")
     private static WebElement selectCountryField;
 
@@ -213,6 +216,10 @@ public class BasePage {
     public static void clickSaveLocationButton(){
         saveLocationButton.click();
         waitForAjaxToComplete(WAIT_ELEMENTS);
+    }
+
+    public static String getCurrentLocation(){
+        return locationChangersImg.get(0).getAttribute("alt");
     }
 
     public static boolean checkProfileButton(){

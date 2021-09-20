@@ -86,6 +86,7 @@ Feature: Smoke
     And User selects location '<location>'
     And User selects currency '<currency>'
     And User clicks save location button
+    Then User checks that current location is '<location>'
 
     Examples:
       | homePage              | button     | buttonPosition | location | currency |
@@ -176,11 +177,11 @@ Feature: Smoke
     And User selects product '<size2>' size
     And User clicks add to wishlist button
     And User clicks wishlistHeaderButton
-    And User checks that count of goods in wishlist is 2
+    When User checks that count of goods in wishlist is 2
     And User removes product '<productName2>' from wishlist
     And User moves product '<productName1>' to bag
-    Then User opens bag page
-    And Users checks that bag item name equals '<productName1>'
+    And User opens bag page
+    Then Users checks that bag item name equals '<productName1>'
 
     Examples:
       | homePage              | button      | feature          | productName1                                                 | size1    | request     | productName2                                                    | size2            |
