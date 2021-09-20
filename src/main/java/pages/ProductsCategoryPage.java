@@ -38,5 +38,6 @@ public class ProductsCategoryPage extends BasePage{
     public void clickFilterSection(String section){
         actions.click(filterSections.stream().filter(sect -> sect.getText()
                 .split("\\(")[0].equals(section)).findFirst().get()).perform();
+        waitElement(filterSections.get(0),WAIT_EL);
     }
 }

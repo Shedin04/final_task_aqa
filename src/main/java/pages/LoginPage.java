@@ -14,7 +14,7 @@ public class LoginPage extends BasePage{
     @FindBy(xpath = "//input[@name='Password']")
     private WebElement passwordField;
 
-    @FindBy(xpath = "//li[contains(text(),'email address or password were incorrect')]")
+    @FindBy(xpath = "//div[@class='error-block']//li[contains(text(),'email address or password were incorrect') or contains(text(),'we cannot log you')]")
     private WebElement signupErrorMessage;
 
     @FindBy(xpath = "//a[contains(@class,'forgot-password')]")
@@ -25,6 +25,9 @@ public class LoginPage extends BasePage{
 
     @FindBy(xpath = "//div[contains(@class,'password-sent')]//span[contains(text,'')]")
     private WebElement resetPasswordLinkSentMessage;
+
+    @FindBy(xpath = "//input[contains(text,'I am not a robot')]")
+    private WebElement notRobotButton;
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -64,11 +67,14 @@ public class LoginPage extends BasePage{
     }
 
     public void clickSubmitButton(){
+        try {
+            notRobotButton.click();
+        } catch (Exception ignored){}
         submitButton.click();
         BasePage.waitForCopyrightsTeg();
     }
 
-    public String checkLoginStatus(){
+    public String checkLoginStatus() {
         try {
             signupErrorMessage.isDisplayed();
         }catch (Exception e){

@@ -3,7 +3,7 @@ Feature: Smoke
   I would like to check that the acute functionalities of program is working fine
   I can do this by performing testing of the software product
 
-  Scenario Outline: User entering the site can select the required category of goods and check count of found styles
+  Scenario Outline: User entering the site can select the required category of goods, sort it and check count of found styles
     Given User opens '<homePage>' page
     And User checks central buttons
     And User checks image on homepage
@@ -12,14 +12,19 @@ Feature: Smoke
     And User checks goods features page
     And User clicks feature '<feature>' button
     And Page with title '<featureTitle>' is displayed
-    Then count of styles is '<countOfStyles>'
+    And User checks filters
+    And User clicks '<filter>' filter
+    And User checks filter sections
+    And User selects filter section '<section>'
+    Then User checks that count of styles is displayed
+    And Count of styles is '<countOfStyles>'
 
     Examples:
-      | homePage              | button     | title | feature                  | featureTitle | countOfStyles |
-      | https://www.asos.com/ | SHOP MEN   | Men   | SMARTY PANTS             | Men          | 2,045         |
-      | https://www.asos.com/ | SHOP WOMEN | Women | TEAM TOPSHOP             | Topshop      | 3,430         |
-      | https://www.asos.com/ | SHOP MEN   | Men   | ASOS X POLO RALPH LAUREN | Ralph        | 610           |
-      | https://www.asos.com/ | SHOP WOMEN | Women | THE NORTH FACE           | The          | 648           |
+      | homePage              | button     | title | feature                  | featureTitle | filter     | section           | countOfStyles |
+      | https://www.asos.com/ | SHOP MEN   | Men   | SMARTY PANTS             | Men          | Style      | Other             | 747           |
+      | https://www.asos.com/ | SHOP WOMEN | Women | TEAM TOPSHOP             | Topshop      | Category   | Knitwear & Sweats | 298           |
+      | https://www.asos.com/ | SHOP MEN   | Men   | ASOS X POLO RALPH LAUREN | Ralph        | Colour     | Yellow            | 6             |
+      | https://www.asos.com/ | SHOP WOMEN | Women | THE NORTH FACE           | The          | Discount % | 40% or more       | 31            |
 
   Scenario Outline: User can find and open required pages in the header, filter goods presented there
     Given User opens '<homePage>' page
@@ -49,7 +54,7 @@ Feature: Smoke
     When User enters request '<request>'
     And User clicks submit search button
     Then User checks that search result '<result>'
-    And count of styles is '<foundStyles>'
+    And Count of styles is '<foundStyles>'
 
     Examples:
       | homePage              | request               | result                      | foundStyles |
@@ -103,8 +108,8 @@ Feature: Smoke
     Examples:
       | homePage              | linkName   | email                 | password   | status    | titleAfter |
       | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | qWeRtY0987 | success   | ASOS       |
-      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | 11eRtY0987 | fail      | ASOS       |
       | https://www.asos.com/ | My Orders  | dmytro.shedin@nure.ua | qWeRtY0987 | success   | My         |
+      | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | 12345      | fail      | ASOS       |
       | https://www.asos.com/ | My Orders  | usermail@i.ua         | qWeRtY0987 | fail      | ASOS       |
 
   Scenario Outline: User can reset password
@@ -131,7 +136,7 @@ Feature: Smoke
     And User selects product with '<productName>' name
     And User checks that product hero equals '<productName>' product name
     And User checks that wishlist button is displayed
-    When User clicks wishlist button
+    When User clicks add to wishlist button
     And User clicks wishlistHeaderButton
     Then User checks that product name in wishlist equals '<productName>'
 
@@ -154,6 +159,30 @@ Feature: Smoke
     Then Users checks that bag item name equals '<productName>'
 
     Examples:
-      | homePage              | request     | productName                                             | colourStatus   | sizeStatus   | size        |
-      | https://www.asos.com/ | Mancester   | Puma Football Manchester City 21/22 Home shirt in blue  | unavailable    | available    | EU 48 - 50  |
-      | https://www.asos.com/ | New Balance | New Balance 574 wedge trainers in zebra print           | unavailable    | available    | EU 37.5     |
+      | homePage              | request     | productName                                                   | colourStatus   | sizeStatus   | size        |
+      | https://www.asos.com/ | Mancester   | Puma Football Manchester City 21/22 Home shirt in blue        | unavailable    | available    | EU 48 - 50  |
+      | https://www.asos.com/ | New Balance | New Balance 54/70 suede trainers in green multi colourblock   | unavailable    | available    | EU 37.5     |
+
+  Scenario Outline: User can check, delete and move products to bag on wishlist page
+    Given User opens '<homePage>' page
+    And User clicks type of shop '<button>' button
+    And User clicks feature '<feature>' button
+    And User selects product with '<productName1>' name
+    And User selects product '<size1>' size
+    And User clicks add to wishlist button
+    And User enters request '<request>'
+    And User clicks submit search button
+    And User selects product with '<productName2>' name
+    And User selects product '<size2>' size
+    And User clicks add to wishlist button
+    And User clicks wishlistHeaderButton
+    And User checks that count of goods in wishlist is 2
+    And User removes product '<productName2>' from wishlist
+    And User moves product '<productName1>' to bag
+    Then User opens bag page
+    And Users checks that bag item name equals '<productName1>'
+
+    Examples:
+      | homePage              | button      | feature          | productName1                                                 | size1    | request     | productName2                                                    | size2            |
+      | https://www.asos.com/ | SHOP MEN    | GOING-OUT SHIRTS | ASOS DESIGN 90s oversized satin shirt in cosmic floral print | M        | Nasa        | Alpha Industries NASA Voyager badge hoodie regular fit in white | M - Chest 40-42  |
+      | https://www.asos.com/ | SHOP WOMEN  | COATS & KNITS    | ASOS DESIGN Curve cropped hooded faux fur in light khaki     | EU 48    | vans        | Vans Sk8-Hi Stacked trainers in zebra print                     | UK 8             |

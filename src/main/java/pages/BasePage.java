@@ -17,6 +17,9 @@ public class BasePage {
     protected static WebDriver driver;
     protected static Actions actions;
 
+    @FindBy(xpath = "//div[@data-auto-id='productListSpinner']")
+    private static WebElement pageLoadingSpinner;
+
     @FindBy(xpath = "//div[contains(@class,'headroom headroom')]//div[@data-testid='header']//a[contains(text(),'') and not(ancestor::div[@id='myaccount-dropdown'])]")
     private static List<WebElement> headerButtonsWithoutProfile;
 
@@ -111,6 +114,12 @@ public class BasePage {
         }catch (Exception ignored){}
     }
 
+    public static void waitPageLoadingSpinner(){
+        try {
+            new WebDriverWait(driver, WAIT_EL).until(ExpectedConditions.invisibilityOf(pageLoadingSpinner));
+        }catch (Exception ignored){}
+    }
+
     public static String getTitle(){
         return driver.getTitle();
     }
@@ -159,6 +168,10 @@ public class BasePage {
 
     public static void clickSubmitSearch(){
         submitSearchButton.click();
+    }
+
+    public static boolean checkCountOfStyles(){
+        return waitElement(countOfStyles,WAIT_EL);
     }
 
     public static String getCountOfStyles(){
@@ -221,7 +234,9 @@ public class BasePage {
 
     public static void openBagPage(){
         waitElement(headerButtonsWithoutProfile.get(4),WAIT_EL);
-        actions.moveToElement(headerButtonsWithoutProfile.get(4)).build().perform();
+        try {
+            actions.moveToElement(headerButtonsWithoutProfile.get(4)).build().perform();
+        }catch (Exception ignored){}
         waitElement(viewBagButton,WAIT_EL);
         viewBagButton.click();
     }

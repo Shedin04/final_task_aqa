@@ -15,6 +15,7 @@ public class BagPage extends BasePage{
     }
 
     public boolean checkBagItem(String productName){
+        waitForPageLoadComplete(WAIT_ELEMENTS);
         waitForElements(bagItems,WAIT_ELEMENTS);
         return bagItems.stream().anyMatch(item -> item.getText().equals(productName));
     }

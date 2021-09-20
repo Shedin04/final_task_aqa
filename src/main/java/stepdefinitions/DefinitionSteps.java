@@ -3,7 +3,6 @@ package stepdefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
 import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -113,8 +112,14 @@ public class DefinitionSteps {
         productsCategoryPage.clickFilter(filter.substring(0,4));
     }
 
-    @And("count of styles is {string}")
+    @And("User checks that count of styles is displayed")
+    public void checkCountOfStyles() {
+        assertTrue(BasePage.checkCountOfStyles());
+    }
+
+    @And("Count of styles is {string}")
     public void checkCountOfStyles(String countOfStyles) {
+        BasePage.waitPageLoadingSpinner();
         try {
             assertEquals(BasePage.getCountOfStyles().length(),countOfStyles.length());
         }catch (Exception e) {
@@ -267,7 +272,7 @@ public class DefinitionSteps {
 
     @And("User checks reset password button")
     public void checkResetPasswordButton() {
-        loginPage.checkResetPasswordButton();
+        assertTrue(loginPage.checkResetPasswordButton());
     }
 
     @And("User clicks reset password button")
@@ -296,7 +301,7 @@ public class DefinitionSteps {
         assertTrue(productPage.checkWishlistButton());
     }
 
-    @And("User clicks wishlist button")
+    @And("User clicks add to wishlist button")
     public void clickWishlistButton() {
         productPage.clickWishlistButton();
     }
@@ -308,8 +313,8 @@ public class DefinitionSteps {
     }
 
     @And("User checks that product name in wishlist equals {string}")
-    public void checkThatProductNameInWishlistEqualsProductName(String productName) { ;
-        assertEquals(wishlistPage.getProductNameInWishlist(), productName);
+    public void checkThatProductNameInWishlistEqualsProductName(String productName) {
+        assertEquals(wishlistPage.getProductNameInWishlist(0), productName);
     }
 
     @And("User checks add to bag button")
@@ -348,8 +353,23 @@ public class DefinitionSteps {
         bagPage = pageFactoryManager.getBagPage();
     }
 
-    @Then("Users checks that bag item name equals {string}")
+    @And("Users checks that bag item name equals {string}")
     public void checkBagItemNameEquals(String productName) {
         assertTrue(bagPage.checkBagItem(productName));
+    }
+
+    @And("User checks that count of goods in wishlist is {int}")
+    public void checkCountGoodsInWishlist(int count) {
+        assertEquals(wishlistPage.getGoodsCountInWishlist(), count);
+    }
+
+    @And("User removes product {string} from wishlist")
+    public void removeProductFromWishlistWithName(String productName) {
+        wishlistPage.removeProductFromWishlistWithName(productName);
+    }
+
+    @And("User moves product {string} to bag")
+    public void moveProductWithNameToBag(String productName) {
+        wishlistPage.moveToBagFromWishPage(productName);
     }
 }
