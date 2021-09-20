@@ -110,7 +110,7 @@ Feature: Smoke
       | homePage              | linkName   | email                 | password   | status    | titleAfter |
       | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | qWeRtY0987 | success   | ASOS       |
       | https://www.asos.com/ | My Orders  | dmytro.shedin@nure.ua | qWeRtY0987 | success   | My         |
-      | https://www.asos.com/ | My Orders  | usermail@i.ua         | qWeRtY0987 | fail      | ASOS       |
+      | https://www.asos.com/ | My Orders  | tempmail464@gmail.com | qWeRtY0987 | fail      | ASOS       |
       | https://www.asos.com/ | Sign In    | dmytro.shedin@nure.ua | 12345      | fail      | ASOS       |
 
   Scenario Outline: User can reset password

@@ -244,6 +244,9 @@ public class BasePage {
         try {
             actions.moveToElement(headerButtonsWithoutProfile.get(4)).build().perform();
         }catch (Exception ignored){}
+        try{
+            viewBagButton.click();
+        }catch (Exception ignored){}
         waitElement(viewBagButton,WAIT_EL);
         viewBagButton.click();
     }
